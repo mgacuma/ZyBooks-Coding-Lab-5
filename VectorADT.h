@@ -5,8 +5,10 @@
 #include <vector>
 using namespace std;
 
-class ItemToPurchase {
+class VectorADT {
   public:
+    VectorADT();
+    ~VectorADT();
     void push_back(double val);
     void resize(int newSize);
     void pop_back();

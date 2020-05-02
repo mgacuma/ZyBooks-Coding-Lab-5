@@ -7,18 +7,14 @@ using namespace std;
 
 class ItemToPurchase {
   public:
-    ItemToPurchase();
-    ItemToPurchase(string in, string d, int p, int q);
-    void SetName(string iname);
-    string GetName() const;
-    void SetDescription(string id);
-    string GetDescription() const;
-    void SetPrice(int p);
-    int GetPrice() const;
-    void SetQuantity(int q);
-    int GetQuantity() const;
-    void PrintItemCost();
-    void PrintItemDescription();
+    void push_back(double val);
+    void resize(int newSize);
+    void pop_back();
+    operator[]();
+    operator+();
+    operator<<();
+    int length() const;
+    int curr_capacity() const;
   private:
     double * array;
     int size;    //the number of doubles stored in array

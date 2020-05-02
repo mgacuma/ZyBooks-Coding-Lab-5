@@ -6,8 +6,16 @@ using namespace std;
   VectorADT::VectorADT(){
     size = 0;
     capacity = 10;
+    double arr[capacity] = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+    array = arr;
   }
-  void push_back(double val);
+  
+  VectorADT::~VectorADT(){}aw
+  
+  void VectorADT::push_back(double val){
+       
+  }
+
   void resize(int newSize)
   void pop_back()
   operator[]()

@@ -26,7 +26,10 @@ using namespace std;
   }
 
   VectorADT::~VectorADT(){
-	  delete[] array;
+	  if(array !=nullptr){
+		  delete[] array;
+		  array = nullptr;
+	  }
   }
 
   void VectorADT::push_back(double val){
@@ -40,12 +43,21 @@ using namespace std;
   }
 
   void VectorADT::resize(int newSize){
-	  if(newSize <= size){
+	  if(newSize == size){
 		  size = newSize;
+	  }
+
+	  else if(newSize < size){
+		  size = newSize;
+
+		  for(int i = size; i < capacity; i++){
+			  array[i] = 0.00;
+		  }
 	  }
 
 	  else {
 		  capacity = 2 * newSize;
+		  array = new double[capacity];
 
 		  int i;
 		  for(i = size; i < capacity; i++){
@@ -54,6 +66,7 @@ using namespace std;
 
 		  size = newSize;
 	  }
+
   }
 
   void VectorADT::pop_back(){
@@ -96,13 +109,21 @@ using namespace std;
 
   std::ostream& operator<<(std::ostream& os, const VectorADT& v){
 	  int i;
-	  for (i = 0; i < v.size-1; i++){
-		  os << v.array[i] << ",";
+	  if(v.size > 0){
+		  for (i = 0; i < v.size-1; i++){
+			  os << v.array[i] << ",";
+		  }
+
+		  os << v.array[v.size-1];
+
+		  return os;
 	  }
 
-	  os << v.array[v.size-1];
-
-	  return os;
+	  else {
+		  string out = "List is empty.";
+		  os << out;
+		  return os;
+	  }
   }
 
   int VectorADT::length() const{

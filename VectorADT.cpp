@@ -5,131 +5,148 @@ using namespace std;
 
 #include "VectorADT.h"
 
-  VectorADT::VectorADT(){
+VectorADT::VectorADT() {
 	size = 0;
-    capacity = 10;
-    array = new double[capacity];
+	capacity = 10;
+	array = new double[capacity];
 
-    for(int i = 0; i < capacity; i++){
-    	array[i] = 0.00;
-    }
-  }
+	for (int i = 0; i < capacity; i++) {
+		array[i] = 0.00;
+	}
+}
 
-  VectorADT::VectorADT(const VectorADT& origClass){
-	  size = origClass.size;
-	  capacity = origClass.capacity;
-	  array = new double[origClass.capacity];
+VectorADT::VectorADT(const VectorADT& origClass) {
+	size = origClass.size;
+	capacity = origClass.capacity;
+	array = new double[origClass.capacity];
 
-	  for(int i = 0; i < origClass.capacity; i++){
-		  array[i] = origClass.array[i];
-	  }
-  }
+	for (int i = 0; i < origClass.capacity; i++) {
+		array[i] = origClass.array[i];
+	}
+}
 
-  VectorADT::~VectorADT(){
-	  if(array !=nullptr){
-		  delete[] array;
-		  array = nullptr;
-	  }
-  }
+VectorADT::~VectorADT() {
+	if (array != nullptr) {
+		delete[] array;
+		array = nullptr;
+	}
+}
 
-  void VectorADT::push_back(double val){
+void VectorADT::push_back(double val) {
 
-	  if(size == capacity){
-		  capacity++;
-	  }
+	if (size == capacity) {
+		capacity++;
+	}
 
-	  array[size] = val;
-	  size++;
-  }
+	array[size] = val;
+	size++;
+}
 
-  void VectorADT::resize(int newSize){
-	  if(newSize == size){
-		  size = newSize;
-	  }
+void VectorADT::resize(int newSize) {
+	double* newArr;
 
-	  else if(newSize < size){
-		  size = newSize;
+	if (newSize == size) {
+		size = newSize;
+	}
 
-		  for(int i = size; i < capacity; i++){
-			  array[i] = 0.00;
-		  }
-	  }
+	if (newSize > capacity) {
+		capacity = newSize * 2;
+	}
 
-	  else {
-		  capacity = 2 * newSize;
-		  array = new double[capacity];
+	newArr = new double[capacity];
+	
 
-		  int i;
-		  for(i = size; i < capacity; i++){
-			  array[i] = 0.00;
-		  }
+	if (newSize < size) {
+		size = newSize;
 
-		  size = newSize;
-	  }
+		for (int i = 0; i < size; i++) {
+			newArr[i] = array[i];
+		}
 
-  }
+		for (int i = size; i < capacity; i++) {
+			newArr[i] = 0.00;
+		}
+	}
 
-  void VectorADT::pop_back(){
-	  size--;
-  }
+	else {
+		for (int i = 0; i < size; i++) {
+			newArr[i] = array[i];
+		}
+		for (int i = size; i < newSize; i++) {
+			newArr[i] = 0.00;
+		}
+	}
 
-  VectorADT& VectorADT::operator=(const VectorADT& origClass) {
+	delete[] array;
+	array = newArr;
+}
 
-	  if (this == &origClass) { return *this; }
+void VectorADT::pop_back() {
+	size--;
+}
 
-	  size = origClass.size;
-	  capacity = origClass.capacity;
+VectorADT& VectorADT::operator=(const VectorADT& origClass) {
+	VectorADT newVec;
+
+	if (this == &origClass) { return *this; }
+
+	newVec.size = origClass.size;
+	newVec.capacity = origClass.capacity;
 
 
-	  for(int i = 0; i < origClass.capacity; i++){
-	  		  array[i] = origClass.array[i];
-	  }
+	for (int i = 0; i < origClass.capacity; i++) {
+		newVec.array[i] = origClass.array[i];
+	}
 
-	  return *this;
-  }
+	return newVec;
+}
 
-  double& VectorADT::operator[](int i){
-	  return array[i];
-  }
+double VectorADT::operator[](int i) {
+	if (i < size) {
+		return array[i];
+	}
+	else { return -1.0; }
+}
 
-  VectorADT VectorADT::operator+(const VectorADT& rhs){
-	  VectorADT asd;
-	  asd.size = rhs.size;
-	  asd.capacity = rhs.capacity;
+VectorADT VectorADT::operator+(const VectorADT& rhs) {
+	VectorADT newVec;
+	
+	newVec.size = rhs.size;
+	newVec.capacity = rhs.capacity;
 
-	  if(size == rhs.size){
-		  int i;
-		  for(i = 0; i < size; i++){
-			  asd.array[i] = array[i] + rhs.array[i];
-		  }
-	  }
+	if (size == rhs.size) {
+		int i;
+		for (i = 0; i < size; i++) {
+			newVec.array[i] = array[i] + rhs.array[i];
+		}
+	}
 
-	  return asd;
-  }
+	return newVec;
+}
 
-  std::ostream& operator<<(std::ostream& os, const VectorADT& v){
-	  int i;
-	  if(v.size > 0){
-		  for (i = 0; i < v.size-1; i++){
-			  os << v.array[i] << ",";
-		  }
+std::ostream& operator<<(std::ostream& os, const VectorADT& v) {
+	int i;
+	if (v.size > 0) {
+		for (i = 0; i < v.size - 1; i++) {
+			os << v.array[i] << ",";
+		}
 
-		  os << v.array[v.size-1];
+		os << v.array[v.size - 1] << endl;
 
-		  return os;
-	  }
+		return os;
+	}
 
-	  else {
-		  string out = "List is empty.";
-		  os << out;
-		  return os;
-	  }
-  }
+	else {
+		string out = "List is empty.";
+		os << out << endl;
+		return os;
+	}
+}
 
-  int VectorADT::length() const{
-	  return size;
-  }
+int VectorADT::length() const {
+	return size;
+}
 
-  int VectorADT::curr_capacity() const{
-	  return capacity;
-  }
+int VectorADT::curr_capacity() const {
+	return capacity;
+}
